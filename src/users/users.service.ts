@@ -1,26 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import {
+  IUserService,
+  SearchUserParams,
+} from './interfaces/search-user-params';
+import { User } from './entities/user.entity';
 
 @Injectable()
-export class UsersService {
+export class UsersService implements IUserService {
   create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+    return Promise.resolve(new User());
   }
 
-  findAll() {
-    return `This action returns all users`;
+  findAll(params: SearchUserParams) {
+    return Promise.resolve([new User()]);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findById(id: string) {
+    return Promise.resolve(new User());
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  findByEmail(email: string) {
+    return Promise.resolve(new User());
   }
 }
