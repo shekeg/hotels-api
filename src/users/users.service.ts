@@ -4,7 +4,7 @@ import {
   IUserService,
   SearchUserParams,
 } from './interfaces/search-user-params';
-import { User } from './entities/user.entity';
+import { User, UserDocument } from './users.schema';
 
 @Injectable()
 export class UsersService implements IUserService {

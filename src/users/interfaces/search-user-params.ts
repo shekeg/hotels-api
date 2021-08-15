@@ -1,4 +1,4 @@
-import { User } from '../entities/user.entity';
+import { User } from '../users.schema';
 
 export interface SearchUserParams {
   limit: number;
