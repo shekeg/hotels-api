@@ -10,7 +10,8 @@ services:
       - /usr/src/app/node_modules
     ports:
       - 3000:3000
-    command: npm run start:dev
+      - 9229:9229
+    command: npm run start:debug
     depends_on:
       - mongo-db
     environment:
