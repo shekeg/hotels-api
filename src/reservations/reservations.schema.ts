@@ -13,21 +13,21 @@ export class Reservation {
     ref: User.name,
     required: true,
   })
-  user: mongoose.Types.ObjectId;
+  user: string | mongoose.Types.ObjectId | User;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: Hotel.name,
     required: true,
   })
-  hotel: Hotel;
+  hotel: string | mongoose.Types.ObjectId | Hotel;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: HotelRoom.name,
     required: true,
   })
-  hotelRoom: HotelRoom;
+  hotelRoom: string | mongoose.Types.ObjectId | HotelRoom;
 
   @Prop({ type: Date, required: true })
   dateStart: Date;
