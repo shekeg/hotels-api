@@ -13,7 +13,7 @@ export class SupportRequest {
     ref: User.name,
     required: true,
   })
-  user: mongoose.Types.ObjectId;
+  user: string | mongoose.Types.ObjectId | User;
 
   @Prop({ type: Date, default: Date.now, required: true })
   created: Date;
@@ -22,7 +22,7 @@ export class SupportRequest {
     type: [mongoose.SchemaTypes.ObjectId],
     ref: Message.name,
   })
-  messages: mongoose.Types.ObjectId[];
+  messages: (string | mongoose.Types.ObjectId | Message)[];
 
   @Prop()
   isActive: boolean;

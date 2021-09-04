@@ -12,7 +12,7 @@ export class Message {
     ref: User.name,
     required: true,
   })
-  author: mongoose.Types.ObjectId;
+  author: string | mongoose.Types.ObjectId | User;
 
   @Prop({ type: Date, required: true })
   sentAt: Date;
