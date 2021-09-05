@@ -7,11 +7,13 @@ import { UsersModule } from './users/users.module';
 import { HotelsModule } from './hotels/hotels.module';
 import { ReservationsModule } from './reservations/reservations.module';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    UsersModule,
+    ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGO_DB_CONNECTION),
+    UsersModule,
     HotelsModule,
     ReservationsModule,
     AuthModule,
