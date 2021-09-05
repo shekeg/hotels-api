@@ -1,3 +1,4 @@
+import { CreateUserDto } from '../dto/create-user.dto';
 import { User } from '../users.schema';
 
 export interface SearchUserParams {
@@ -9,7 +10,7 @@ export interface SearchUserParams {
 }
 
 export interface IUserService {
-  create(data: Partial<User>): Promise<User>;
+  create(data: CreateUserDto): Promise<User>;
   findAll(params: SearchUserParams): Promise<User[]>;
   findById(id: string): Promise<User>;
   findByEmail(email: string): Promise<User>;
