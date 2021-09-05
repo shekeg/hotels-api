@@ -34,16 +34,18 @@ export class ReservationsService implements IReservationService {
   getReservations(filter: IReservationSearchOptions): Promise<Reservation[]> {
     const queryFilter: FilterQuery<Reservation> = {};
 
-    if (filter.dateStart) {
-      queryFilter.dateStart = new Date(filter.dateStart);
-    }
+    if (filter) {
+      if (filter.dateStart) {
+        queryFilter.dateStart = new Date(filter.dateStart);
+      }
 
-    if (filter.dateEnd) {
-      queryFilter.dateEnd = new Date(filter.dateEnd);
-    }
+      if (filter.dateEnd) {
+        queryFilter.dateEnd = new Date(filter.dateEnd);
+      }
 
-    if (filter.user) {
-      queryFilter.user = filter.user;
+      if (filter.user) {
+        queryFilter.user = filter.user;
+      }
     }
 
     return this.reservationModel
