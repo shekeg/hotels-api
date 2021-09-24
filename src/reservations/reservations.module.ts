@@ -12,5 +12,6 @@ import { Reservation, ReservationSchema } from './reservations.schema';
   ],
   controllers: [ReservationsController],
   providers: [ReservationsService],
+  exports: [ReservationsService],
 })
 export class ReservationsModule {}

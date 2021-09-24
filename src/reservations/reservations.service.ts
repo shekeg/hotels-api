@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 
@@ -28,7 +28,13 @@ export class ReservationsService implements IReservationService {
     return this.reservationModel
       .findByIdAndDelete(id)
       .exec()
-      .then(() => null);
+      .then((res) => {
+        if (res === null) {
+          throw new BadRequestException('Reservation does not exist');
+        }
+
+        return null;
+      });
   }
 
   getReservations(filter: IReservationSearchOptions): Promise<Reservation[]> {
@@ -53,5 +59,9 @@ export class ReservationsService implements IReservationService {
       .populate('hotelRoom', 'title description images')
       .populate('hotel', 'title description')
       .exec();
+  }
+
+  matchClientId(user, reservationId) {
+    return this.reservationModel.exists({ _id: reservationId, user });
   }
 }

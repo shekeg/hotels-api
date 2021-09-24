@@ -11,6 +11,7 @@ import { UserManagementModule } from './user-management/user-management.module';
 import { HotelsApiModule } from './hotels-api/hotels-api.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ReservationsApiModule } from './reservations-api/reservations-api.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { join } from 'path';
     AuthModule,
     UserManagementModule,
     HotelsApiModule,
+    ReservationsApiModule,
   ],
   controllers: [AppController],
   providers: [AppService],
