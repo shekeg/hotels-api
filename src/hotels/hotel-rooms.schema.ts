@@ -9,7 +9,7 @@ export type HotelRoomDocument = HotelRoom & Document;
 @Schema({ timestamps: true })
 export class HotelRoom {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Hotel.name })
-  hotel: Hotel;
+  hotel: string | mongoose.Types.ObjectId | Hotel;
 
   @Prop()
   title: string;

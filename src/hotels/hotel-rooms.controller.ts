@@ -22,22 +22,6 @@ import { Overwrite } from 'src/shared/type-utils';
 export class HotelRoomsController {
   constructor(private readonly hotelRoomsService: HotelRoomsService) {}
 
-  @Put(':id')
-  @UseInterceptors(FilesInterceptor('images'))
-  update(
-    @Param('id') id: string,
-    @Body(new UpdateHotelRoomBodyPipe())
-    body: Overwrite<UpdateHotelRoomDto, { images: string[] }>,
-    @UploadedFiles() newImages: Array<Express.Multer.File>,
-  ) {
-    const images = [
-      ...body.images,
-      ...newImages.map((image) => image.originalname),
-    ];
-    const data = { ...body, images };
-    return this.hotelRoomsService.update(id, data);
-  }
-
   @Post()
   @UseInterceptors(FilesInterceptor('images'))
   create(

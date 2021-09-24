@@ -13,11 +13,6 @@ export class HotelsController {
     return this.hotelsService.create(createHotelDto);
   }
 
-  @Get()
-  search(@Query() params: Pick<Hotel, 'title'>) {
-    return this.hotelsService.search(params);
-  }
-
   @Get(':id')
   findById(@Param('id') id: string) {
     return this.hotelsService.findById(id);

@@ -3,5 +3,4 @@ export interface ISearchRoomsParams {
   offset: number;
   title: string;
   hotel: string;
-  isEnabled?: true;
 }

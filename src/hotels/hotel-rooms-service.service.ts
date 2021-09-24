@@ -34,12 +34,22 @@ export class HotelRoomsService implements IHotelRoomService {
   }
 
   search(params: ISearchRoomsParams): Promise<HotelRoom[]> {
-    const filter: FilterQuery<HotelRoomDocument> = {
-      title: { $regex: new RegExp(params.title) },
-    };
-    if (params.isEnabled) {
-      filter.isEnabled = params.isEnabled;
+    const filter: FilterQuery<HotelRoomDocument> = {};
+
+    if (params) {
+      if (params.title) {
+        filter.title = { $regex: new RegExp(params.title) };
+      }
+
+      if (params.hotel) {
+        filter.hotel = params.hotel;
+      }
+
+      if (params.isEnabled) {
+        filter.isEnabled = params.isEnabled;
+      }
     }
+
     return this.hotelRoomModel
       .find(filter, 'title images')
       .populate('hotel', 'title')
