@@ -1,9 +1,9 @@
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { SendMessageDto } from './dto/send-message.dto';
 import { IGetChatListParams } from './interfaces/get-chat-list-params.interface';
 import { ISupportRequestService } from './interfaces/support-request-service.interface';
-import { Message } from './messages.schema';
+import { Message, MessageDocument } from './messages.schema';
 import {
   SupportRequest,
   SupportRequestDocument,
@@ -13,51 +13,43 @@ export class SupportRequestService implements ISupportRequestService {
   constructor(
     @InjectModel(SupportRequest.name)
     private readonly supportRequestModel: Model<SupportRequestDocument>,
+    @InjectModel(Message.name)
+    private readonly messageModel: Model<MessageDocument>,
   ) {}
 
   findSupportRequests(params: IGetChatListParams): Promise<SupportRequest[]> {
     return this.supportRequestModel.find(params).exec();
   }
 
-  sendMessage(data: SendMessageDto): Promise<Message> {
-    return this.supportRequestModel
-      .findById(data.supportRequest)
-      .populate('messages')
-      .exec()
-      .then((supportRequestDocument) => {
-        const newMessage: Message = {
-          author: Types.ObjectId(data.author),
-          sentAt: new Date(),
-          text: data.text,
-          readAt: null,
-        };
+  async sendMessage(data: SendMessageDto): Promise<Message> {
+    const newMessage = new this.messageModel({
+      author: data.author,
+      sentAt: new Date(),
+      text: data.text,
+      readAt: null,
+    });
 
-        supportRequestDocument.messages = [
-          ...supportRequestDocument.messages,
-          newMessage,
-        ];
-        return supportRequestDocument.save();
-      })
-      .then((supportRequestDocument) => {
-        const lastIndex = supportRequestDocument.messages.length - 1;
-        const res = supportRequestDocument.messages[lastIndex];
-        if (res instanceof Message) {
-          return res;
-        }
-      });
+    const messageDocument = await newMessage.save();
+
+    await this.supportRequestModel.findByIdAndUpdate(data.supportRequest, {
+      $push: {
+        messages: newMessage._id,
+      },
+    });
+
+    return this.messageModel
+      .findById(messageDocument.id)
+      .populate('author', 'name');
   }
 
   getMessages(supportRequest: string): Promise<Message[]> {
-    /*
-    TODO: не забыть проверить автора в сообщениях 
-      "author": {
-        "id": string,
-        "name": string
-      }
-    */
     return this.supportRequestModel
       .findById(supportRequest)
-      .populate('messages', 'sentAt text readAt')
+      .populate({
+        path: 'messages',
+        select: 'sentAt text readAt',
+        populate: { path: 'author', select: 'name' },
+      })
       .exec()
       .then((supportRequestDocument) => {
         return supportRequestDocument.messages as Message[];

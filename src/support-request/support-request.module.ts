@@ -20,5 +20,10 @@ import { SupportRequestService } from './support-request.service';
     SupportRequestEmployeeService,
     SupportRequestService,
   ],
+  exports: [
+    SupportRequestClientService,
+    SupportRequestEmployeeService,
+    SupportRequestService,
+  ],
 })
-export class HotelsModule {}
+export class SupportRequestModule {}

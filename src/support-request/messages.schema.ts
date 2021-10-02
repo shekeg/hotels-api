@@ -14,7 +14,7 @@ export class Message {
   })
   author: string | mongoose.Types.ObjectId | User;
 
-  @Prop({ type: Date, required: true })
+  @Prop({ type: Date, required: true, default: Date.now })
   sentAt: Date;
 
   @Prop({ required: true })

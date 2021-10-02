@@ -12,6 +12,7 @@ import { HotelsApiModule } from './hotels-api/hotels-api.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ReservationsApiModule } from './reservations-api/reservations-api.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { ReservationsApiModule } from './reservations-api/reservations-api.modul
     UserManagementModule,
     HotelsApiModule,
     ReservationsApiModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],
