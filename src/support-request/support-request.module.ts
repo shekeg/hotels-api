@@ -24,6 +24,9 @@ import { SupportRequestService } from './support-request.service';
     SupportRequestClientService,
     SupportRequestEmployeeService,
     SupportRequestService,
+    MongooseModule.forFeature([
+      { name: SupportRequest.name, schema: SupportRequestSchema },
+    ]),
   ],
 })
 export class SupportRequestModule {}
