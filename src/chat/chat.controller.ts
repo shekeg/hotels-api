@@ -8,7 +8,7 @@ import {
   Get,
   Param,
 } from '@nestjs/common';
-import { AdminOrClientGuard } from 'src/common/guards/admin-or-client.guard';
+import { ManagerOrClientGuard } from 'src/common/guards/manager-or-client.guard';
 import { AuthenticatedGuard } from 'src/common/guards/authenticated.guard';
 import { ManagerGuard } from 'src/common/guards/manager.guard';
 import { ISearchSupportRequestParams } from 'src/support-request/interfaces/search-support-request-params.interface';
@@ -24,13 +24,13 @@ export class ChatController {
     private readonly supportRequestService: SupportRequestService,
   ) {}
 
-  @UseGuards(AuthenticatedGuard, AdminOrClientGuard)
+  @UseGuards(AuthenticatedGuard, ManagerOrClientGuard)
   @Get('api/common/support-requests/:id/messages')
   getMessages(@Param('id') id: string) {
     return this.supportRequestService.getMessages(id);
   }
 
-  @UseGuards(AuthenticatedGuard, AdminOrClientGuard)
+  @UseGuards(AuthenticatedGuard, ManagerOrClientGuard)
   @Post('api/common/support-requests/:id/messages')
   sendMessage(
     @Request() req,
@@ -44,7 +44,7 @@ export class ChatController {
     });
   }
 
-  @UseGuards(AuthenticatedGuard, AdminOrClientGuard)
+  @UseGuards(AuthenticatedGuard, ManagerOrClientGuard)
   @Post('api/common/support-requests/:id/messages/read')
   markMessagesAsRead(
     @Request() req,

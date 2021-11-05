@@ -7,7 +7,7 @@ import {
 } from 'src/support-request/support-request.schema';
 
 @Injectable()
-export class AdminOrClientGuard implements CanActivate {
+export class ManagerOrClientGuard implements CanActivate {
   constructor(
     @InjectModel(SupportRequest.name)
     private readonly supportRequest: Model<SupportRequestDocument>,
