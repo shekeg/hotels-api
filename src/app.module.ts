@@ -14,6 +14,7 @@ import { join } from 'path';
 import { ReservationsApiModule } from './reservations-api/reservations-api.module';
 import { ChatModule } from './chat/chat.module';
 import { ChatGateway } from './chat.gateway';
+import { SupportRequestModule } from './support-request/support-request.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { ChatGateway } from './chat.gateway';
     UserManagementModule,
     HotelsApiModule,
     ReservationsApiModule,
+    SupportRequestModule,
     ChatModule,
   ],
   controllers: [AppController],

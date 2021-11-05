@@ -1,3 +1,4 @@
+import { EventEmitter } from 'events';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { SendMessageDto } from './dto/send-message.dto';
@@ -10,6 +11,8 @@ import {
 } from './support-request.schema';
 
 export class SupportRequestService implements ISupportRequestService {
+  newMessageEmitter = new EventEmitter();
+
   constructor(
     @InjectModel(SupportRequest.name)
     private readonly supportRequestModel: Model<SupportRequestDocument>,
@@ -31,15 +34,23 @@ export class SupportRequestService implements ISupportRequestService {
 
     const messageDocument = await newMessage.save();
 
-    await this.supportRequestModel.findByIdAndUpdate(data.supportRequest, {
+    const targetSupportRequest = await this.supportRequestModel.findById(
+      data.supportRequest,
+    );
+
+    await targetSupportRequest.updateOne({
       $push: {
         messages: newMessage._id,
       },
     });
 
-    return this.messageModel
+    const response = await this.messageModel
       .findById(messageDocument.id)
       .populate('author', 'name');
+
+    this.newMessageEmitter.emit('newMessage', targetSupportRequest, response);
+
+    return response;
   }
 
   getMessages(supportRequest: string): Promise<Message[]> {
@@ -57,8 +68,8 @@ export class SupportRequestService implements ISupportRequestService {
   }
 
   subscribe(
-    handler: (supportRequest: SupportRequest, message: Message) => void,
-  ): () => void {
-    throw new Error('Method not implemented.');
+    handler: (supportRequest: SupportRequestDocument, message: Message) => void,
+  ): void {
+    this.newMessageEmitter.on('newMessage', handler);
   }
 }
